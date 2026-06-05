@@ -4,13 +4,11 @@
     Reset the Marktstand workspace for the next visitor.
 
 .DESCRIPTION
-    1. Deletes the 'Code' directory next to this script (where the previous
-       visitor's Advent-of-Code experiments live).
+    1. Deletes the 'Code' directory (sibling of OpenDoor, i.e. ~/src/Code).
     2. Recreates 'Code' empty.
     3. Copies all *.md handouts and *.csv data files from this script's
-       directory into 'Code', so the next visitor has the briefs and data
-       ready to go.
-    4. cd's into 'Code' and launches the Claude CLI for the next visitor.
+       directory into 'Code'.
+    4. cd's into 'Code' and launches the Claude CLI.
 
     Safe to run when 'Code' does not exist yet. Asks for confirmation unless
     -Force is passed.
@@ -28,32 +26,25 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-Set-StrictMode -Version Latest
 
-[string]$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-# Code/ lives next to the OpenDoor/ repo (see Setup-OhMyPosh.ps1: $HOME/src/Code).
-[string]$CodeDir   = Resolve-Path -LiteralPath (Join-Path $ScriptDir '..\Code') -ErrorAction SilentlyContinue
-if ($null -eq $CodeDir) {
-    # Fallback: create it where Setup-OhMyPosh.ps1 would have put it.
-    [string]$CodeDir = Join-Path (Split-Path -Parent $ScriptDir) 'Code'
-}
-else {
-    [string]$CodeDir = $CodeDir.Path
-}
+# --- Paths ----------------------------------------------------------------
+$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ParentDir = Split-Path -Parent $ScriptDir
+$CodeDir   = Join-Path $ParentDir 'Code'
 
-# --- Confirm ---
+# --- Confirm --------------------------------------------------------------
 if (-not $Force) {
-    [string]$reply = Read-Host "Reset '$CodeDir' for the next visitor? (y/N)"
+    $reply = Read-Host "Reset '$CodeDir' for the next visitor? (y/N)"
     if ($reply -notin @('y', 'Y', 'yes', 'Yes')) {
         Write-Host 'Aborted.' -ForegroundColor Yellow
         exit 0
     }
 }
 
-# --- Wipe ---
-if (Test-Path -Path $CodeDir -PathType Container) {
+# --- Wipe -----------------------------------------------------------------
+if (Test-Path -LiteralPath $CodeDir -PathType Container) {
     try {
-        Remove-Item -Path $CodeDir -Recurse -Force
+        Remove-Item -LiteralPath $CodeDir -Recurse -Force
         Write-Host "Removed '$CodeDir'." -ForegroundColor Green
     }
     catch {
@@ -62,35 +53,33 @@ if (Test-Path -Path $CodeDir -PathType Container) {
     }
 }
 
-# --- Recreate ---
-New-Item -Path $CodeDir -ItemType Directory -Force | Out-Null
+# --- Recreate -------------------------------------------------------------
+$null = New-Item -Path $CodeDir -ItemType Directory -Force
 
-# --- Seed with handouts + data ---
-[System.IO.FileInfo[]]$filesToCopy = @(
-    Get-ChildItem -Path $ScriptDir -Filter '*.md'  -File
-    Get-ChildItem -Path $ScriptDir -Filter '*.csv' -File
-)
+# --- Seed with handouts + data -------------------------------------------
+$mdFiles  = @(Get-ChildItem -Path $ScriptDir -Filter '*.md'  -File -ErrorAction SilentlyContinue)
+$csvFiles = @(Get-ChildItem -Path $ScriptDir -Filter '*.csv' -File -ErrorAction SilentlyContinue)
+$filesToCopy = @($mdFiles + $csvFiles)
 
 if ($filesToCopy.Count -eq 0) {
     Write-Warning "No .md or .csv files found in '$ScriptDir' to seed."
 }
 else {
     foreach ($file in $filesToCopy) {
-        Copy-Item -Path $file.FullName -Destination $CodeDir -Force
+        Copy-Item -LiteralPath $file.FullName -Destination $CodeDir -Force
     }
     Write-Host ("Copied {0} file(s) into '{1}'." -f $filesToCopy.Count, $CodeDir) -ForegroundColor Green
 }
 
 Write-Host 'Ready for the next visitor.' -ForegroundColor Cyan
 
-# --- Hand over to Claude CLI in the Code directory ---
-Set-Location -Path $CodeDir
+# --- Hand over to Claude CLI in the Code directory -----------------------
+Set-Location -LiteralPath $CodeDir
 
-[System.Management.Automation.CommandInfo]$claudeCmd =
-    Get-Command -Name 'claude' -ErrorAction SilentlyContinue
+$claudeCmd = Get-Command -Name 'claude' -ErrorAction SilentlyContinue
 
 if ($null -eq $claudeCmd) {
-    Write-Warning "Claude CLI not found on PATH. cd-ed into '$CodeDir' — start it manually."
+    Write-Warning "Claude CLI not found on PATH. cd-ed into '$CodeDir' - start it manually."
     exit 0
 }
 
