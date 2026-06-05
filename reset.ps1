@@ -10,20 +10,14 @@
        directory into 'Code'.
     4. cd's into 'Code' and launches the Claude CLI.
 
-    Safe to run when 'Code' does not exist yet. Asks for confirmation unless
-    -Force is passed.
-
-.PARAMETER Force
-    Skip the confirmation prompt.
+    Runs without confirmation - intended to be triggered between visitors
+    by the booth operator.
 
 .EXAMPLE
     .\reset.ps1
-    .\reset.ps1 -Force
 #>
 [CmdletBinding()]
-param(
-    [switch]$Force
-)
+param()
 
 $ErrorActionPreference = 'Stop'
 
@@ -32,14 +26,7 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ParentDir = Split-Path -Parent $ScriptDir
 $CodeDir   = Join-Path $ParentDir 'Code'
 
-# --- Confirm --------------------------------------------------------------
-if (-not $Force) {
-    $reply = Read-Host "Reset '$CodeDir' for the next visitor? (y/N)"
-    if ($reply -notin @('y', 'Y', 'yes', 'Yes')) {
-        Write-Host 'Aborted.' -ForegroundColor Yellow
-        exit 0
-    }
-}
+Write-Host "Resetting '$CodeDir' for the next visitor ..." -ForegroundColor Cyan
 
 # --- Wipe -----------------------------------------------------------------
 if (Test-Path -LiteralPath $CodeDir -PathType Container) {
@@ -57,7 +44,10 @@ if (Test-Path -LiteralPath $CodeDir -PathType Container) {
 $null = New-Item -Path $CodeDir -ItemType Directory -Force
 
 # --- Seed with handouts + data -------------------------------------------
-$mdFiles  = @(Get-ChildItem -Path $ScriptDir -Filter '*.md'  -File -ErrorAction SilentlyContinue)
+# Copy all *.md (exercise briefs + AGENT.md) and *.csv data files, but
+# skip README.md — that one is for the booth operator, not the visitor.
+$mdFiles  = @(Get-ChildItem -Path $ScriptDir -Filter '*.md'  -File -ErrorAction SilentlyContinue |
+              Where-Object { $_.Name -ne 'README.md' })
 $csvFiles = @(Get-ChildItem -Path $ScriptDir -Filter '*.csv' -File -ErrorAction SilentlyContinue)
 $filesToCopy = @($mdFiles + $csvFiles)
 

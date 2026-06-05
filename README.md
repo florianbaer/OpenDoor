@@ -23,7 +23,7 @@ nur Python + Node verfügbar, Code speichern + ausführen).
 ## Zwischen zwei Besucher:innen
 
 ```powershell
-.\reset.ps1 -Force
+.\reset.ps1
 ```
 
 Das Script:
@@ -33,7 +33,7 @@ Das Script:
 3. Kopiert alle `*.md`-Handouts und `*.csv`-Daten + `AGENT.md` rein.
 4. Wechselt nach `Code/` und startet die Claude-CLI.
 
-Ohne `-Force` fragt das Script vorher nach Bestätigung.
+Läuft ohne Rückfrage durch.
 
 ## Initialer Setup (einmal pro Rechner)
 

@@ -194,6 +194,15 @@ Write-Step 'Installiere Claude Code...'
 winget install --id Anthropic.ClaudeCode --source winget `
     --accept-package-agreements --accept-source-agreements --silent
 
+# Sicherstellen, dass die installierte Version up-to-date ist.
+Write-Step 'Aktualisiere Claude Code (falls vorhanden)...'
+winget upgrade --id Anthropic.ClaudeCode --source winget `
+    --accept-package-agreements --accept-source-agreements --silent
+if ($LASTEXITCODE -eq -1978335189) {
+    # APPINSTALLER_CLI_ERROR_NO_APPLICABLE_UPDATE_FOUND - bereits aktuell, ok.
+    Write-Host 'Claude Code ist bereits auf dem neuesten Stand.' -ForegroundColor Green
+}
+
 # --- 7. Quell-Ordner anlegen und Repo klonen ------------------------------
 Write-Step 'Lege ~/src und ~/src/Code an und klone OpenDoor...'
 $srcDir  = Join-Path $HOME 'src'
@@ -249,3 +258,30 @@ Write-Host "Aktuelle Session testen mit:  . `$PROFILE" -ForegroundColor Green
 Write-Host "`nFalls die Zeile fehlt, manuell ins Profil einfuegen:" -ForegroundColor Cyan
 Write-Host 'oh-my-posh init pwsh | Invoke-Expression'
 notepad $PROFILE
+
+# --- 8. Wechsle nach $codeDir und starte Claude Code ----------------------
+# Setup-OhMyPosh hat Claude Code soeben installiert; der PATH ist in DIESER
+# Session evtl. noch nicht aktualisiert. Daher: erst nach Code/ wechseln,
+# dann claude.exe direkt oder ueber den winget-Link-Ordner starten.
+Write-Step "Wechsle nach '$codeDir' und starte Claude Code..."
+Set-Location -LiteralPath $codeDir
+
+$claudeCmd = Get-Command -Name 'claude' -ErrorAction SilentlyContinue
+if ($null -ne $claudeCmd) {
+    $claudeExe = $claudeCmd.Source
+} else {
+    # winget legt Shims hier ab
+    $candidates = @(
+        Join-Path $env:LOCALAPPDATA 'Microsoft\WinGet\Links\claude.exe'
+        Join-Path $env:LOCALAPPDATA 'Programs\claude\claude.exe'
+        Join-Path $env:LOCALAPPDATA 'Anthropic\ClaudeCode\claude.exe'
+    )
+    $claudeExe = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+}
+
+if ($claudeExe) {
+    Write-Host "Starte Claude Code in '$codeDir' ..." -ForegroundColor Cyan
+    & $claudeExe
+} else {
+    Write-Warning "Claude Code (claude.exe) nicht gefunden. Bitte Terminal neu starten und im Ordner '$codeDir' 'claude' ausfuehren."
+}
