@@ -11,10 +11,10 @@ sie direkt mit agentic engineering im Terminal durch (Claude Code als CLI).
 | # | Übung | Worum es geht |
 |---|---|---|
 | 1 | AoC – Erste Aufgabe | Mini-Puzzle in einer Sprache deiner Wahl |
-| 2 | AoC – Schwere Aufgabe | Strategie zuerst, dann Code |
+| 2 | AoC – Tiefenmesser | Anstiege in Sonar-Messungen zählen + Liniendiagramm |
 | 3 | K-Means mit Euklid | 3 Punkte, K-Means von Hand bauen |
-| 4 | K-Means für Texte (Cosinus) | Warum Cosinus auf Texten besser ist |
-| 5 | K-Means auf Geo-Daten | CSV der Schweizer Städte, Euklid vs. Manhattan |
+| 4 | AoC – Kalorienzähler | Wichtel-Snacks summieren, max finden + Balkendiagramm |
+| 5 | K-Means auf Geo-Daten | CSV der Schweizer Städte, Euklid vs. Manhattan/Haversine |
 
 Daten- und Briefing-Dateien liegen im `Code/`-Ordner, damit Claude sie
 direkt liest. `AGENT.md` instruiert den Agenten (Beginner-Niveau,
@@ -59,10 +59,12 @@ nach `~/src/OpenDoor`. Erzeugt zusätzlich `~/src/Code` als Arbeitsordner.
 
 ## Wenn jemand am Stand sitzt und nicht weiss, was wählen
 
-- Erste Übung am Stand? → **01 AoC Erste Aufgabe**
-- Schon mal mit AoC gearbeitet? → **02 AoC Schwere Aufgabe**
-- Data-Science-Interesse? → **03**, dann **04** oder **05**
-- Wenig Zeit? → **03** ist am schnellsten durchgespielt
+- Erste Übung am Stand? → **01 AoC Erste Aufgabe** (Trebuchet) oder
+  **02 Tiefenmesser** (noch einfacher)
+- Lust auf einen weiteren Mini-Brainteaser? → **04 Kalorienzähler**
+- Data-Science-Interesse? → **03 K-Means Euklid**, dann **05 Geo-K-Means**
+- Wenig Zeit? → **02 Tiefenmesser** oder **04 Kalorienzähler** sind am
+  schnellsten durchgespielt
 
 ## Typische Stolpersteine
 
@@ -127,9 +129,9 @@ Fälle sofort wieder.
 ## Dateien hier
 
 - `01_AoC_Erste_Aufgabe.{docx,md}` — Handout für Besucher
-- `02_AoC_Schwere_Aufgabe.{docx,md}`
+- `02_AoC_Tiefenmesser.{docx,md}`
 - `03_KMeans_mit_Euklid.{docx,md}`
-- `04_KMeans_fuer_Texte_Cosinus.{docx,md}`
+- `04_AoC_Kalorienzaehler.{docx,md}`
 - `05_KMeans_auf_Geo_Manhattan.{docx,md}`
 - `swiss_cities.csv` — Datenfile für Übung 5
 - `AGENT.md` — Briefing für die Claude-CLI (wird nach `Code/` kopiert)

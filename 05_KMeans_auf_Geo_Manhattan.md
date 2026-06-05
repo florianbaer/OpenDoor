@@ -10,6 +10,8 @@ Wenn wir Standorte clustern, ist „Luftlinie“ nicht immer ehrlich. Hier ist d
 >
 > Lies die Datei swiss_cities.csv im aktuellen Ordner (Spalten: city, lat, lon). Implementier K-Means in Python (ohne scikit-learn) mit euklidischer Distanz und k=3. Speicher den Code, führ ihn aus und zeig mir: welche Stadt landet in welchem Cluster und wo sind die Centroids? Mach auch einen einfachen Scatter-Plot der Städte mit Cluster-Farben.
 
+*Kurzform: schreib Claude einfach „bitte mache Aufgabe 5". Dann mit „löse Schritt 1 ... 6 von Aufgabe 5" durch die Schritte hier unten gehen.*
+
 ## So gehst du vor
 
 **Schritt 1 – CSV lesen und mit Euklid clustern**
@@ -30,7 +32,7 @@ Im Prompt steht der Befehl. Claude liest swiss_cities.csv, baut K-Means mit eukl
 
 **Schritt 5 – Lass Unit Tests schreiben**
 
-„Schreib pytest-Tests mit bekannten Werten – z.B. Zürich–Bern ca. 95 km Luftlinie. Plus ein Test, der prüft, dass nach dem Wechsel auf eine andere Distanz mindestens eine Stadt das Cluster wechselt. Führ die Tests aus.“
+„Schreib pytest-Tests: 1) Haversine-Distanz Zürich–Bern ≈ 95 km Luftlinie (Haversine, nicht Euklid). 2) Euklid auf rohen Lat/Lon liefert dimensionslose Werte. 3) Nach Wechsel der Distanz wechselt mindestens eine Stadt ihr Cluster. Führ die Tests aus.“
 
 **Schritt 6 – README dazu schreiben**
 

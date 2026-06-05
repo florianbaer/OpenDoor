@@ -16,27 +16,29 @@ Wir bauen K-Means von Hand – mit drei winzigen Datenpunkten, die du auf einer 
 
 Speicher den Code als Datei, führ ihn aus und zeig mir: welcher Punkt landet in welchem Cluster und wo sind die Centroids? Erklär mir danach in einem Satz, warum genau diese Cluster entstanden sind.
 
+*Kurzform: schreib Claude einfach „bitte mache Aufgabe 3". Dann mit „löse Schritt 1 ... 6 von Aufgabe 3" durch die Schritte hier unten gehen.*
+
 ## So gehst du vor
 
-**Schritt 1 – Bau K-Means in Python mit Euklid**
+**Schritt 1 – K-Means verstehen (falls neu)**
+
+Wenn dir „K-Means“ oder „Clustering“ nichts sagt, frag Claude zuerst: „Was ist K-Means Clustering und wie funktioniert es? Erklär mir’s mit einer Alltags-Analogie.“ Erst weitermachen, wenn’s klick gemacht hat.
+
+**Schritt 2 – Bau K-Means in Python mit Euklid**
 
 Die drei Punkte stehen im Prompt. Claude schreibt K-Means von Hand (ohne scikit-learn), speichert die Datei, führt sie aus und zeigt dir: welcher Punkt landet in welchem Cluster?
 
-**Schritt 2 – Was ist euklidische Distanz?**
+**Schritt 3 – Distanzen verstehen**
 
-„Erklär mir die euklidische Distanz so, dass ich sie meinem nicht-technischen Kollegen erklären könnte. Rechne sie für die drei Punkte einmal von Hand vor.“
+„Erklär mir die euklidische Distanz mit einer Alltags-Analogie und rechne sie für die drei Punkte von Hand vor. Danach: welche 3 anderen Distanzen gibt es, und wann ist welche besser als Euklid?“
 
-**Schritt 3 – Welche Distanzen gibt es sonst?**
+**Schritt 4 – Vorher/Nachher-Plot mit anderer Distanz**
 
-„Welche anderen Distanzen kennst du? Erklär mir 3 davon kurz und sag jeweils, in welcher Situation sie besser als Euklid sein könnte.“
-
-**Schritt 4 – Visualisier die Iterationen + andere Distanz**
-
-„Plot die K-Means-Iterationen Schritt für Schritt (4 Panels) als `kmeans_iter.png` und öffne das Bild. Dann tausch die Distanz aus (z. B. Manhattan) und mach denselben Plot als `kmeans_iter_manhattan.png`. Was hat sich verändert?“
+„Mach einen Plot mit 2 Panels: links Cluster mit Euklid, rechts Cluster mit Manhattan (oder einer anderen Distanz). Speicher als `kmeans_compare.png` und öffne das Bild. Welcher Punkt landet wo unterschiedlich – und warum?“
 
 **Schritt 5 – Lass Unit Tests schreiben**
 
-„Schreib pytest-Tests für die Distanzfunktion mit den drei Punkten als Ground Truth – ich kann sie ja von Hand nachrechnen. Plus ein Test, dass K-Means die erwarteten Cluster liefert. Führ die Tests aus.“
+„Schreib pytest-Tests für die Distanzfunktion mit den drei Punkten als Ground Truth (ich kann sie von Hand nachrechnen). Plus ein Test, dass K-Means die erwarteten Cluster liefert – nutz dafür einen festen Seed (`random.seed(42)`), damit der Test reproduzierbar ist.“
 
 **Schritt 6 – README dazu schreiben**
 

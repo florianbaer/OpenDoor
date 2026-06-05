@@ -21,8 +21,8 @@ Inhalt sinngemäss (auf Deutsch, freundlich, ohne Pathos):
 > 2. **Eine vorbereitete Übung lösen** – die Übungsblätter liegen
 >    physisch am Marktstand bereit. Digital findest du sie auch hier im
 >    aktuellen Ordner als `01_AoC_Erste_Aufgabe.md`,
->    `02_AoC_Schwere_Aufgabe.md`, `03_KMeans_mit_Euklid.md`,
->    `04_KMeans_fuer_Texte_Cosinus.md` und
+>    `02_AoC_Tiefenmesser.md`, `03_KMeans_mit_Euklid.md`,
+>    `04_AoC_Kalorienzaehler.md` und
 >    `05_KMeans_auf_Geo_Manhattan.md`.
 >
 > Was passt dir besser?

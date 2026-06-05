@@ -17,6 +17,8 @@ Hier ist eine kleine Knobelaufgabe – direkt im Handout. Kein Browser nötig. L
 
 Das Ergebnis muss 142 sein (12 + 38 + 15 + 77). Lös das in Python: speicher den Code als Datei, führ ihn aus, zeig mir das Ergebnis. Erklär mir die Lösung Schritt für Schritt – ich bin Anfänger:in.
 
+*Kurzform: schreib Claude einfach „bitte mache Aufgabe 1". Dann mit „löse Schritt 1 ... 6 von Aufgabe 1" durch die Schritte hier unten gehen.*
+
 ## So gehst du vor
 
 **Schritt 1 – Aufgabe lesen**
