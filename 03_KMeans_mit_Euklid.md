@@ -1,6 +1,6 @@
 # K-Means selbst bauen – mit nur 3 Punkten
 
-*Marktstand · Claude Code · Übung 3 von 5*
+*Marktstand · Agentic Engineering · Übung 3 von 5*
 
 **~ 15 Min · Mini-Daten zum Anfassen · Du brauchst: Python im Kopf**
 

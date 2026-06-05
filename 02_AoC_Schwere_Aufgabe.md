@@ -1,6 +1,6 @@
 # Advent of Code – das knifflige Mini-Puzzle
 
-*Marktstand · Claude Code · Übung 2 von 5*
+*Marktstand · Agentic Engineering · Übung 2 von 5*
 
 **~ 15 Min · ein bisschen kniffliger · Du brauchst: Geduld**
 

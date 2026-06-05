@@ -55,14 +55,93 @@ if (Test-Path -LiteralPath (Join-Path $ScriptDir '.git')) {
     Write-Warning "'$ScriptDir' is not a git repo - skipping pull."
 }
 
-# --- Wipe -----------------------------------------------------------------
-if (Test-Path -LiteralPath $CodeDir -PathType Container) {
+# --- Stop any lingering Claude processes ---------------------------------
+# A claude process from the previous visitor will hold file locks inside
+# Code/ and make Remove-Item fail. Kill it before wiping.
+$claudeProcs = @(Get-Process -Name 'claude' -ErrorAction SilentlyContinue) +
+               @(Get-Process -Name 'claude-code' -ErrorAction SilentlyContinue)
+foreach ($proc in $claudeProcs) {
     try {
-        Remove-Item -LiteralPath $CodeDir -Recurse -Force
-        Write-Host "Removed '$CodeDir'." -ForegroundColor Green
+        Stop-Process -Id $proc.Id -Force -ErrorAction Stop
+        Write-Host ("Stopped lingering process: {0} (PID {1})." -f $proc.ProcessName, $proc.Id) -ForegroundColor Yellow
+    } catch {
+        Write-Warning ("Could not stop process {0} (PID {1}): {2}" -f $proc.ProcessName, $proc.Id, $_.Exception.Message)
     }
-    catch {
-        Write-Error "Failed to remove '$CodeDir': $_"
+}
+
+# Also kill any node.exe whose command line points at claude (npm-installed
+# Claude Code shows up as node.exe holding the working directory open).
+try {
+    $nodeProcs = Get-CimInstance -ClassName Win32_Process -Filter "Name = 'node.exe'" -ErrorAction SilentlyContinue |
+                 Where-Object { $_.CommandLine -match 'claude' }
+    foreach ($np in $nodeProcs) {
+        try {
+            Stop-Process -Id $np.ProcessId -Force -ErrorAction Stop
+            Write-Host ("Stopped lingering node process (PID {0}) - claude wrapper." -f $np.ProcessId) -ForegroundColor Yellow
+        } catch {
+            Write-Warning ("Could not stop node PID {0}: {1}" -f $np.ProcessId, $_.Exception.Message)
+        }
+    }
+} catch {
+    # CIM not available - skip silently
+}
+
+# Move OUT of $CodeDir (in case this shell sits inside it) before delete.
+Set-Location -LiteralPath $HOME
+
+# Give Windows a moment to release file handles.
+Start-Sleep -Milliseconds 300
+
+# --- Wipe -----------------------------------------------------------------
+function Remove-DirRobust {
+    param([Parameter(Mandatory)][string]$Path)
+
+    # 1. Quick try.
+    try {
+        Remove-Item -LiteralPath $Path -Recurse -Force -ErrorAction Stop
+        return $true
+    } catch {
+        Write-Warning "Remove-Item failed: $($_.Exception.Message)"
+    }
+
+    # 2. Rename to a temp name, then delete. Renaming often succeeds even
+    #    when individual files are locked; the delete can then proceed in
+    #    the background.
+    $tmpPath = Join-Path (Split-Path -Parent $Path) (".to-delete-{0}" -f ([guid]::NewGuid().ToString('n').Substring(0,8)))
+    try {
+        Rename-Item -LiteralPath $Path -NewName (Split-Path -Leaf $tmpPath) -ErrorAction Stop
+        Write-Host "Renamed locked dir to '$tmpPath', deleting in background ..." -ForegroundColor Yellow
+        Start-Job -ScriptBlock {
+            param($p)
+            for ($i = 0; $i -lt 10; $i++) {
+                try { Remove-Item -LiteralPath $p -Recurse -Force -ErrorAction Stop; return } catch { Start-Sleep -Seconds 1 }
+            }
+        } -ArgumentList $tmpPath | Out-Null
+        return $true
+    } catch {
+        Write-Warning "Rename fallback also failed: $($_.Exception.Message)"
+    }
+
+    # 3. Last resort: cmd.exe rmdir, which sometimes copes when PowerShell does not.
+    try {
+        & cmd.exe /c "rmdir /s /q `"$Path`""
+        if (-not (Test-Path -LiteralPath $Path)) { return $true }
+    } catch {
+        Write-Warning "cmd rmdir failed: $($_.Exception.Message)"
+    }
+
+    return -not (Test-Path -LiteralPath $Path)
+}
+
+if (Test-Path -LiteralPath $CodeDir -PathType Container) {
+    if (Remove-DirRobust -Path $CodeDir) {
+        Write-Host "Removed '$CodeDir'." -ForegroundColor Green
+    } else {
+        Write-Error "Konnte '$CodeDir' nicht loeschen. Wahrscheinlich haelt noch etwas Files offen:"
+        Write-Error "  - Windows-Explorer-Fenster auf 'Code' geoeffnet? Schliessen."
+        Write-Error "  - VS Code / Editor mit Datei aus Code/ offen? Schliessen."
+        Write-Error "  - Anderes PowerShell-Fenster sitzt in 'Code'? 'cd ~' ausfuehren."
+        Write-Error "Danach reset.ps1 erneut starten."
         exit 1
     }
 }

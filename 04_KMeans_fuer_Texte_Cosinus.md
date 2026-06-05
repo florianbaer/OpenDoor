@@ -1,6 +1,6 @@
 # K-Means für Texte – warum Cosinus oft besser ist
 
-*Marktstand · Claude Code · Übung 4 von 5*
+*Marktstand · Agentic Engineering · Übung 4 von 5*
 
 **~ 15 Min · NLP-Geschmacksprobe · Du brauchst: 3 Mini-Vektoren**
 

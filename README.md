@@ -1,12 +1,12 @@
-# Claude Code Marktstand — Stand-Anleitung
+# Agentic Engineering Marktstand — Stand-Anleitung
 
-Kurzanleitung für die Person, die den Marktstand „Claude Code (Hands-on)"
+Kurzanleitung für die Person, die den Marktstand „Agentic Engineering (Hands-on)"
 am Helsana IT Event betreut.
 
 ## Was die Besucher:innen am Stand tun
 
 Sie wählen eine der **5 Übungen** (Handouts auf dem Tisch) und arbeiten
-sie direkt mit Claude Code im Terminal durch.
+sie direkt mit agentic engineering im Terminal durch (Claude Code als CLI).
 
 | # | Übung | Worum es geht |
 |---|---|---|

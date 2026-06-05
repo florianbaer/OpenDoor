@@ -1,6 +1,6 @@
 # Advent of Code – dein erstes Mini-Puzzle
 
-*Marktstand · Claude Code · Übung 1 von 5*
+*Marktstand · Agentic Engineering · Übung 1 von 5*
 
 **~ 10 Min · für absolute Anfänger:innen · Du brauchst: Neugier**
 

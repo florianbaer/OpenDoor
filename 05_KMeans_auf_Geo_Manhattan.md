@@ -1,6 +1,6 @@
 # K-Means auf Geo-Daten – Euklid vs. Manhattan
 
-*Marktstand · Claude Code · Übung 5 von 5*
+*Marktstand · Agentic Engineering · Übung 5 von 5*
 
 **~ 15 Min · CSV-Datei liegt bei · Du brauchst: Spass an Karten**
 
