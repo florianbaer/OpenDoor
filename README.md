@@ -82,6 +82,10 @@ nach `~/src/OpenDoor`. Erzeugt zusätzlich `~/src/Code` als Arbeitsordner.
 - **Tests schlagen fehl** — meistens fehlt eine pip-Library. Claude
   vorschlagen lassen: „installier die fehlende Dependency und versuch
   es nochmal."
+- **Webserver hängt nach Demo** — Claude darf laut `CLAUDE.md` einen
+  Server max. 2 Minuten laufen lassen und muss ihn danach selbst killen.
+  Wenn doch mal einer hängt: PowerShell `Get-Process node, python |
+  Stop-Process -Force`, dann `reset.ps1`.
 
 ## FAQ
 
@@ -108,6 +112,11 @@ macht meistens mehr Spass und führt zu besseren Aha-Momenten.
 **„Wer hat das PC-Passwort?"** — **Markus**, **Lea**, **Stefan** und
 **Florian**. Bei einem Neustart oder Login-Problem einfach eine dieser
 Personen ansprechen.
+
+**„Was, wenn `reset.ps1` nicht funktioniert?"** — Kein Stress, kein
+Debugging am Stand: einfach **den PC neu starten**. Danach Terminal
+öffnen → `cd src/OpenDoor` → `.\reset.ps1`. Funktioniert in 99 % der
+Fälle sofort wieder.
 
 ## Dateien hier
 

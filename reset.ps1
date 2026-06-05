@@ -29,6 +29,42 @@ $CodeDir   = Join-Path $HOME 'src\Code'
 Write-Host "ScriptDir : $ScriptDir" -ForegroundColor DarkGray
 Write-Host "CodeDir   : $CodeDir"   -ForegroundColor DarkGray
 
+# --- 0. Kill processes on common dev ports -------------------------------
+# Visitors' Claude sessions sometimes leave a dev server running. Free the
+# usual suspects so a) the port is available for the next demo and b) the
+# Node/Python process holding files in Code/ goes away before we copy.
+$portsToFree = @(
+    3000, 3001,            # React / Express / Next.js
+    4000,                  # CRA / generic
+    4173,                  # Vite preview
+    5000, 5001,            # Flask / .NET Kestrel
+    5173, 5174,            # Vite dev server (and alt)
+    7860,                  # Gradio
+    8000, 8001,            # Django / Python http.server / FastAPI
+    8080, 8081,            # Generic HTTP / alt
+    8888,                  # Jupyter
+    9000                   # PHP / generic
+)
+
+foreach ($port in $portsToFree) {
+    try {
+        $conns = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
+        if (-not $conns) { continue }
+        $pids = @($conns | Select-Object -ExpandProperty OwningProcess -Unique)
+        foreach ($processId in $pids) {
+            try {
+                $proc = Get-Process -Id $processId -ErrorAction Stop
+                Stop-Process -Id $processId -Force -ErrorAction Stop
+                Write-Host ("Killed port {0} -> {1} (PID {2})." -f $port, $proc.ProcessName, $processId) -ForegroundColor Yellow
+            } catch {
+                Write-Warning ("Could not kill PID {0} on port {1}: {2}" -f $processId, $port, $_.Exception.Message)
+            }
+        }
+    } catch {
+        # Get-NetTCPConnection not available - skip silently
+    }
+}
+
 # --- 1. Pull latest OpenDoor ---------------------------------------------
 if (Test-Path -LiteralPath (Join-Path $ScriptDir '.git')) {
     if (Get-Command -Name 'git' -ErrorAction SilentlyContinue) {

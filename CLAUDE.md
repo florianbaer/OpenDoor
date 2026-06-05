@@ -88,6 +88,21 @@ Versuch nicht, fehlende Compiler/Runtimes nachzuinstallieren oder
 unbekannte Binaries aufzurufen — das frisst Zeit und endet in
 Fehlermeldungen.
 
+## Webserver / Localhost-Demos
+
+Wenn du einen lokalen Webserver startest (Flask, FastAPI, `bun run`,
+`http.server`, Vite-Dev-Server, was auch immer):
+
+- **Lass den Server maximal 2 Minuten laufen.** Sobald die Person das
+  Resultat im Browser gesehen hat, **kill den Prozess wieder**
+  (`Ctrl+C`, oder `Stop-Process -Id <PID>`, oder `kill <pid>`).
+- **Lass keine Hintergrund-Server stehen.** Sie blockieren Ports, halten
+  Node-Prozesse offen und stören das spätere `reset.ps1`.
+- Wenn die Person den Server länger sehen will: kurz hinweisen, dass sie
+  ihn **selbst beendet**, bevor sie weitergeht.
+
+Faustregel: alles was du startest, schliesst du auch wieder.
+
 ## Grafiken, Diagramme, Visualisierungen
 
 Wenn die Person nach einem Diagramm, einer Grafik oder einer Visualisierung
