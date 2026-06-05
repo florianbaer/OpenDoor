@@ -1,4 +1,4 @@
-# AGENT.md — Briefing für den Coding-Assistenten
+# AGENTS.md — Briefing für den Coding-Assistenten
 
 Du arbeitest im Code-Ordner eines Besuchers am **OpenDoor Event AI @ Helsana**,
 Marktstand „Agentic Engineering (Hands-on)". Die Person probiert

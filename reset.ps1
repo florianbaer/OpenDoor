@@ -57,7 +57,7 @@ if (-not (Test-Path -LiteralPath $CodeDir -PathType Container)) {
 }
 
 # --- 3. Refresh handouts + data files (overwrite, no delete) -------------
-# All *.md (incl. AGENT.md, CLAUDE.md, exercise briefs) except README.md,
+# All *.md (incl. CLAUDE.md, AGENTS.md, exercise briefs) except README.md,
 # plus all *.csv data files.
 $mdFiles  = @(Get-ChildItem -Path $ScriptDir -Filter '*.md'  -File -ErrorAction SilentlyContinue |
               Where-Object { $_.Name -ine 'README.md' })
