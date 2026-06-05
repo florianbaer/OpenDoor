@@ -85,6 +85,11 @@ nach `~/src/OpenDoor`. Erzeugt zusätzlich `~/src/Code` als Arbeitsordner.
 
 ## FAQ
 
+> ⚠️ **WICHTIG — Beim Benutzerwechsel:** Neuen Tab im Terminal öffnen
+> (`Strg + T`), zu `cd src/OpenDoor/` navigieren und dort `.\reset.ps1`
+> ausführen. **Das ist mega wichtig**, sonst arbeitet die nächste
+> Person in der Session der vorigen weiter.
+
 **„Kann ich auch Opus 4.8 probieren?"** — Ja, wenn jemand unbedingt
 will, dann gerne. Für die kleinen Übungen hier ist es allerdings
 overkill: Sonnet reicht für alles, was am Marktstand vorkommt, und ist
