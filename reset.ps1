@@ -88,5 +88,10 @@ if ($null -eq $claudeCmd) {
 }
 
 Write-Host "Launching Claude CLI in '$CodeDir' ..." -ForegroundColor Cyan
-$cmdLine = 'cd /d "{0}" && claude' -f $CodeDir
+
+# Seed an initial prompt so Claude immediately responds with the welcome
+# message defined in CLAUDE.md / AGENTS.md (instead of silently waiting
+# for the visitor to type something first).
+$initialPrompt = 'Hallo'
+$cmdLine = 'cd /d "{0}" && claude "{1}"' -f $CodeDir, $initialPrompt
 & cmd.exe /c $cmdLine
