@@ -22,16 +22,16 @@ nur Python + Node verfügbar, Code speichern + ausführen).
 
 ## Zwischen zwei Besucher:innen
 
-Bei jedem Personenwechsel:
+Bei jedem Personenwechsel **in dieser Reihenfolge**:
 
-1. **Im Terminal einen neuen Tab öffnen** (Windows Terminal: `Strg + T`).
-   Die laufende Claude-Session der vorigen Person bleibt im alten Tab,
-   damit nichts gelockt ist.
-2. Ins Repo wechseln:
+1. **Neuen Tab im Terminal öffnen.** Zuerst öffnen, sonst geht das
+   ganze Terminal zu.
+2. **Alten Tab des vorherigen Gastes schliessen.**
+3. Ins Repo wechseln:
    ```powershell
    cd src/OpenDoor
    ```
-3. Reset-Script starten:
+4. Reset-Script starten:
    ```powershell
    .\reset.ps1
    ```
@@ -89,10 +89,16 @@ nach `~/src/OpenDoor`. Erzeugt zusätzlich `~/src/Code` als Arbeitsordner.
 
 ## FAQ
 
-> ⚠️ **WICHTIG — Beim Benutzerwechsel:** Neuen Tab im Terminal öffnen
-> (`Strg + T`), zu `cd src/OpenDoor/` navigieren und dort `.\reset.ps1`
-> ausführen. **Das ist mega wichtig**, sonst arbeitet die nächste
-> Person in der Session der vorigen weiter.
+> ⚠️ **WICHTIG — Beim Benutzerwechsel (in dieser Reihenfolge!):**
+>
+> 1. **Neuen Tab im Terminal öffnen.** Zuerst öffnen, sonst geht das
+>    ganze Terminal zu.
+> 2. **Alten Tab des vorherigen Gastes schliessen.**
+> 3. `cd src/OpenDoor/`
+> 4. `.\reset.ps1`
+>
+> **Das ist mega wichtig.** Sonst arbeitet die nächste Person in der
+> Session der vorigen weiter oder Reset hängt.
 
 **„Kann ich auch Opus 4.8 probieren?"** — Ja, wenn jemand unbedingt
 will, dann gerne. Für die kleinen Übungen hier ist es allerdings
