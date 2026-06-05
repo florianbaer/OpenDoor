@@ -31,7 +31,15 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 [string]$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-[string]$CodeDir   = Join-Path $ScriptDir 'Code'
+# Code/ lives next to the OpenDoor/ repo (see Setup-OhMyPosh.ps1: $HOME/src/Code).
+[string]$CodeDir   = Resolve-Path -LiteralPath (Join-Path $ScriptDir '..\Code') -ErrorAction SilentlyContinue
+if ($null -eq $CodeDir) {
+    # Fallback: create it where Setup-OhMyPosh.ps1 would have put it.
+    [string]$CodeDir = Join-Path (Split-Path -Parent $ScriptDir) 'Code'
+}
+else {
+    [string]$CodeDir = $CodeDir.Path
+}
 
 # --- Confirm ---
 if (-not $Force) {

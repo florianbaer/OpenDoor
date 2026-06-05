@@ -183,12 +183,18 @@ if (Test-Path $wtSettings) {
     Write-Warning 'Windows Terminal settings.json nicht gefunden. Schriftart manuell setzen.'
 }
 
-# --- 5. Claude Code via winget --------------------------------------------
+# --- 5. Node.js via winget ------------------------------------------------
+# Wird fuer den Marktstand benoetigt (HTML/CSS/JS-Loesungen, npm-Scripts).
+Write-Step 'Installiere Node.js (OpenJS)...'
+winget install -e --id OpenJS.NodeJS --source winget `
+    --accept-package-agreements --accept-source-agreements --silent
+
+# --- 6. Claude Code via winget --------------------------------------------
 Write-Step 'Installiere Claude Code...'
 winget install --id Anthropic.ClaudeCode --source winget `
     --accept-package-agreements --accept-source-agreements --silent
 
-# --- 6. Quell-Ordner anlegen und Repo klonen ------------------------------
+# --- 7. Quell-Ordner anlegen und Repo klonen ------------------------------
 Write-Step 'Lege ~/src und ~/src/Code an und klone OpenDoor...'
 $srcDir  = Join-Path $HOME 'src'
 $codeDir = Join-Path $srcDir 'Code'
@@ -207,11 +213,27 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
 
 if (Get-Command git -ErrorAction SilentlyContinue) {
     $repoTarget = Join-Path $srcDir 'OpenDoor'
-    if (Test-Path $repoTarget) {
-        Write-Host "Repo bereits vorhanden: $repoTarget" -ForegroundColor Yellow
+    if (Test-Path (Join-Path $repoTarget '.git')) {
+        Write-Host "Repo bereits vorhanden - pulle neueste Version: $repoTarget" -ForegroundColor Yellow
+        try {
+            git -C $repoTarget pull --ff-only
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "Repo aktualisiert: $repoTarget" -ForegroundColor Green
+            } else {
+                Write-Warning "git pull --ff-only fehlgeschlagen (Exit $LASTEXITCODE). Lokale Aenderungen pruefen."
+            }
+        } catch {
+            Write-Warning "git pull fehlgeschlagen: $($_.Exception.Message)"
+        }
+    } elseif (Test-Path $repoTarget) {
+        Write-Warning "'$repoTarget' existiert, ist aber kein Git-Repo. Bitte Ordner pruefen / loeschen und Setup erneut ausfuehren."
     } else {
         git -C $srcDir clone https://github.com/florianbaer/OpenDoor
-        Write-Host "Repo geklont nach: $repoTarget" -ForegroundColor Green
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "Repo geklont nach: $repoTarget" -ForegroundColor Green
+        } else {
+            Write-Warning "git clone fehlgeschlagen (Exit $LASTEXITCODE)."
+        }
     }
 } else {
     Write-Warning 'git in dieser Session nicht verfuegbar. Bitte Shell neu starten und klonen:'
