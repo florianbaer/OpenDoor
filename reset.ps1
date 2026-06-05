@@ -71,17 +71,19 @@ Write-Host 'Ready for the next visitor.' -ForegroundColor Cyan
 
 # --- Hand over to Claude CLI in the Code directory -----------------------
 Set-Location -LiteralPath $CodeDir
-Write-Host "Current directory: $(Get-Location)" -ForegroundColor DarkGray
+Write-Host "Current directory: $((Get-Location).Path)" -ForegroundColor DarkGray
 
 $claudeCmd = Get-Command -Name 'claude' -ErrorAction SilentlyContinue
-
 if ($null -eq $claudeCmd) {
     Write-Warning "Claude CLI not found on PATH. cd-ed into '$CodeDir' - start it manually."
     exit 0
 }
 
 Write-Host "Launching Claude CLI in '$CodeDir' ..." -ForegroundColor Cyan
-# Use Start-Process with explicit -WorkingDirectory so the child process
-# inherits the Code directory even if the wrapper would otherwise default
-# to its own location.
-Start-Process -FilePath $claudeCmd.Source -WorkingDirectory $CodeDir -NoNewWindow -Wait
+
+# Bulletproof launch: claude.cmd is a wrapper that can lose the parent
+# PowerShell working directory. Force the working directory via cmd.exe's
+# `cd /d` (handles drive changes too) right before calling claude. This
+# guarantees claude starts in $CodeDir regardless of any shim/alias chain.
+$cmdLine = 'cd /d "{0}" && claude' -f $CodeDir
+& cmd.exe /c $cmdLine
