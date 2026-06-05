@@ -32,6 +32,35 @@ $CodeDir = Join-Path $HOME 'src\Code'
 
 Write-Host "ScriptDir : $ScriptDir" -ForegroundColor DarkGray
 Write-Host "CodeDir   : $CodeDir"   -ForegroundColor DarkGray
+
+# --- Safety guards: never wipe the OpenDoor repo itself -------------------
+# Normalise paths for comparison (trailing slash, case).
+function _Norm([string]$p) {
+    if ([string]::IsNullOrWhiteSpace($p)) { return '' }
+    try { return ([System.IO.Path]::GetFullPath($p)).TrimEnd('\','/').ToLowerInvariant() }
+    catch { return $p.TrimEnd('\','/').ToLowerInvariant() }
+}
+
+$normCode    = _Norm $CodeDir
+$normScript  = _Norm $ScriptDir
+
+if ([string]::IsNullOrWhiteSpace($normCode)) {
+    Write-Error "CodeDir resolved to empty - aborting to avoid disaster."
+    exit 1
+}
+if ($normCode -eq $normScript) {
+    Write-Error "CodeDir equals OpenDoor ('$ScriptDir') - refusing to delete the repo."
+    exit 1
+}
+if ($normScript.StartsWith($normCode + '\') -or $normScript.StartsWith($normCode + '/')) {
+    Write-Error "OpenDoor ('$ScriptDir') sits inside CodeDir ('$CodeDir') - refusing to delete (would nuke the repo)."
+    exit 1
+}
+if ((Split-Path -Leaf $normCode) -ne 'code') {
+    Write-Error "CodeDir basename is not 'Code' ('$CodeDir') - aborting as a safety check."
+    exit 1
+}
+
 Write-Host "Resetting '$CodeDir' for the next visitor ..." -ForegroundColor Cyan
 
 # --- Pull latest OpenDoor (so newest handouts get seeded) ----------------
