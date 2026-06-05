@@ -189,6 +189,16 @@ Write-Step 'Installiere Node.js (OpenJS)...'
 winget install -e --id OpenJS.NodeJS --source winget `
     --accept-package-agreements --accept-source-agreements --silent
 
+# --- 5a. Bun (schneller JS-Runtime / Paket-Manager) ----------------------
+Write-Step 'Installiere Bun (Oven-sh.Bun)...'
+winget install -e --id Oven-sh.Bun --source winget `
+    --accept-package-agreements --accept-source-agreements --silent
+
+# --- 5b. uv (schneller Python-Paket-Manager / Runner) --------------------
+Write-Step 'Installiere uv (astral-sh.uv)...'
+winget install -e --id astral-sh.uv --source winget `
+    --accept-package-agreements --accept-source-agreements --silent
+
 # --- 6. Claude Code via winget --------------------------------------------
 Write-Step 'Installiere Claude Code...'
 winget install --id Anthropic.ClaudeCode --source winget `

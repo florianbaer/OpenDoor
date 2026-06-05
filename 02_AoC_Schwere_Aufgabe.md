@@ -29,9 +29,9 @@ Sag Claude: „Schreib noch keinen Code. Erklär mir zuerst in 4-5 Bullet Points
 
 Wenn die Strategie überzeugt: „Setz das jetzt in Python um. Speicher die Datei, führ sie mit der Beispiel-Eingabe aus und zeig mir das Ergebnis.“ Stimmt’s mit der erwarteten Antwort 4?
 
-**Schritt 4 – Weiter denken**
+**Schritt 4 – Plot den Pfad**
 
-„Würde dein Code auch funktionieren, wenn der Pfad 1000 Zeichen lang ist? Wo wäre der Engpass? Wie würdest du ihn schneller machen?“
+„Zeichne den Roboterpfad auf einem 2D-Plot: jeden besuchten Punkt verbinden, Start und Endpunkt markieren, den Punkt mit max. Manhattan-Distanz hervorheben. Speicher als `robot_path.png` und öffne das Bild.“
 
 **Schritt 5 – Lass Unit Tests schreiben**
 

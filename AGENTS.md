@@ -62,6 +62,15 @@ und natürlich **HTML/CSS/JavaScript** (im Browser ausführbar). **Mehr
 nicht.** Keine Rust-, Go-, Java-, C#-, Swift-, Kotlin-, Ruby-, Elixir-
 oder sonstigen Toolchains.
 
+### Tooling-Pflicht
+
+- **Python:** Nutze immer **`uv`** — also `uv run script.py`, `uv add <pkg>`,
+  `uv pip install …`. Nicht `python script.py` direkt, nicht `pip` ohne uv.
+  `uv` ist installiert und ist deutlich schneller.
+- **JavaScript / Node:** Nutze immer **`bun`** — also `bun run script.js`,
+  `bun add <pkg>`, `bun install`. Nicht `node script.js`, nicht `npm install`.
+  `bun` ist installiert.
+
 Wenn die Person Code in einer anderen Sprache will:
 
 1. Sag ihr ehrlich, dass auf dieser Maschine nur Python + Node verfügbar

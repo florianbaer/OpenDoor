@@ -30,9 +30,9 @@ Die drei Vektoren stehen im Prompt. Claude schreibt K-Means mit euklidischer Dis
 
 „Erklär mir Cosinus-Ähnlichkeit mit einer Alltags-Analogie und rechne sie für meine 3 Vektoren von Hand vor. Warum ist Cosinus für Texte fast immer die bessere Wahl?“
 
-**Schritt 4 – Cosinus einbauen und vergleichen**
+**Schritt 4 – Cosinus + Vektor-Plot**
 
-„Wechsle in meinem K-Means die Distanz zu Cosinus und lauf das Clustering nochmal. Jetzt sollten {T1, T2} zusammen sein – stimmt’s? Was bedeutet das fachlich?“
+„Wechsle in meinem K-Means die Distanz zu Cosinus. Plus: Plot die 3 Vektoren als Pfeile vom Ursprung (T1 + T2 zeigen in dieselbe Richtung, T3 woanders). Speicher als `vectors.png` und öffne das Bild. Jetzt sieht man sofort, warum Cosinus T1+T2 zusammen clustert.“
 
 **Schritt 5 – Lass Unit Tests schreiben**
 

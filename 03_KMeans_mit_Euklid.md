@@ -30,9 +30,9 @@ Die drei Punkte stehen im Prompt. Claude schreibt K-Means von Hand (ohne scikit-
 
 „Welche anderen Distanzen kennst du? Erklär mir 3 davon kurz und sag jeweils, in welcher Situation sie besser als Euklid sein könnte.“
 
-**Schritt 4 – Eine andere Distanz ausprobieren**
+**Schritt 4 – Visualisier die Iterationen + andere Distanz**
 
-„Wähle eine andere Distanz, die für diese Punkte vielleicht etwas anders berechnet wird. Erklär warum – und dann tausch sie in meinem K-Means aus. Vergleich die Distanz-Zahlen vorher/nachher.“
+„Plot die K-Means-Iterationen Schritt für Schritt (4 Panels) als `kmeans_iter.png` und öffne das Bild. Dann tausch die Distanz aus (z. B. Manhattan) und mach denselben Plot als `kmeans_iter_manhattan.png`. Was hat sich verändert?“
 
 **Schritt 5 – Lass Unit Tests schreiben**
 

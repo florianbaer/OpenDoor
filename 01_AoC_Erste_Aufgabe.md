@@ -31,13 +31,13 @@ Wähl eine Sprache (Python, Rust, TypeScript, was auch immer). Claude schreibt d
 
 „Erklär mir deine Lösung Schritt für Schritt – als wäre ich Anfänger:in.“ Was du nicht verstehst, frag direkt nochmal nach.
 
-**Schritt 4 – Wechsle die Sprache**
+**Schritt 4 – Mach das Ergebnis sichtbar**
 
-„Schreib das jetzt nochmal in einer anderen Sprache.“ Vergleich, was sich ändert. Lass dir die 3 spannendsten Unterschiede zeigen.
+„Pro Zeile gibt’s eine zweistellige Zahl. Zeichne ein Balkendiagramm der Werte pro Zeile als PNG und speicher es als `trebuchet.png`. Öffne danach das Bild.“
 
 **Schritt 5 – Lass Unit Tests schreiben**
 
-„Schreib 3 Unit Tests: die Beispiel-Eingabe muss 142 ergeben, eine Zeile ohne Ziffern gibt 0, eine Zeile mit nur einer Ziffer gibt diese doppelt. Führ die Tests aus.“
+„Schreib 3 Unit Tests: Beispiel-Eingabe = 142, Zeile ohne Ziffern = 0, Zeile mit einer Ziffer = doppelt diese. Führ die Tests aus.“
 
 **Schritt 6 – README dazu schreiben**
 
