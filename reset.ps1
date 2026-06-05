@@ -34,6 +34,27 @@ Write-Host "ScriptDir : $ScriptDir" -ForegroundColor DarkGray
 Write-Host "CodeDir   : $CodeDir"   -ForegroundColor DarkGray
 Write-Host "Resetting '$CodeDir' for the next visitor ..." -ForegroundColor Cyan
 
+# --- Pull latest OpenDoor (so newest handouts get seeded) ----------------
+if (Test-Path -LiteralPath (Join-Path $ScriptDir '.git')) {
+    if (Get-Command -Name 'git' -ErrorAction SilentlyContinue) {
+        Write-Host "Pulling latest OpenDoor ..." -ForegroundColor Cyan
+        try {
+            git -C $ScriptDir pull --ff-only
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "OpenDoor up to date." -ForegroundColor Green
+            } else {
+                Write-Warning "git pull --ff-only exited with code $LASTEXITCODE. Continuing with current files."
+            }
+        } catch {
+            Write-Warning "git pull failed: $($_.Exception.Message). Continuing with current files."
+        }
+    } else {
+        Write-Warning "git not on PATH - skipping pull. Continuing with current files."
+    }
+} else {
+    Write-Warning "'$ScriptDir' is not a git repo - skipping pull."
+}
+
 # --- Wipe -----------------------------------------------------------------
 if (Test-Path -LiteralPath $CodeDir -PathType Container) {
     try {
@@ -50,10 +71,11 @@ if (Test-Path -LiteralPath $CodeDir -PathType Container) {
 $null = New-Item -Path $CodeDir -ItemType Directory -Force
 
 # --- Seed with handouts + data -------------------------------------------
-# Copy all *.md (exercise briefs + AGENT.md) and *.csv data files, but
-# skip README.md — that one is for the booth operator, not the visitor.
+# Copy ALL *.md files (exercise briefs + AGENT.md + CLAUDE.md) and *.csv
+# data files. Only README.md is skipped - that one is for the booth
+# operator, not the visitor.
 $mdFiles  = @(Get-ChildItem -Path $ScriptDir -Filter '*.md'  -File -ErrorAction SilentlyContinue |
-              Where-Object { $_.Name -ne 'README.md' })
+              Where-Object { $_.Name -ine 'README.md' })
 $csvFiles = @(Get-ChildItem -Path $ScriptDir -Filter '*.csv' -File -ErrorAction SilentlyContinue)
 $filesToCopy = @($mdFiles + $csvFiles)
 
@@ -63,6 +85,7 @@ if ($filesToCopy.Count -eq 0) {
 else {
     foreach ($file in $filesToCopy) {
         Copy-Item -LiteralPath $file.FullName -Destination $CodeDir -Force
+        Write-Host ("  copied  {0}" -f $file.Name) -ForegroundColor DarkGray
     }
     Write-Host ("Copied {0} file(s) into '{1}'." -f $filesToCopy.Count, $CodeDir) -ForegroundColor Green
 }

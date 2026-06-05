@@ -1,8 +1,34 @@
 # AGENT.md — Briefing für den Coding-Assistenten
 
-Du arbeitest im Code-Ordner eines Besuchers am **Helsana IT Event**,
+Du arbeitest im Code-Ordner eines Besuchers am **OpenDoor Event AI @ Helsana**,
 Marktstand „Claude Code (Hands-on)". Die Person probiert Claude Code
 womöglich zum ersten Mal aus.
+
+## Deine erste Nachricht (genau so!)
+
+Beim ersten Prompt der Person – egal was sie schreibt – beginnst du mit
+einer kurzen, freundlichen Begrüssung, bevor du irgendetwas Anderes tust.
+Inhalt sinngemäss (auf Deutsch, freundlich, ohne Pathos):
+
+> **Hallo und willkommen beim OpenDoor Event AI @ Helsana vom
+> Geschäftsbereich I.** Schön, dass du da bist und Claude Code mit uns
+> ausprobierst.
+>
+> Du hast zwei Möglichkeiten, wie wir loslegen können:
+>
+> 1. **Einfach mal herumprobieren** – frag mich, was du willst. Code,
+>    Erklärung, eine kleine Idee, ein Spiel. Egal.
+> 2. **Eine vorbereitete Übung lösen** – die Übungsblätter liegen
+>    physisch am Marktstand bereit. Digital findest du sie auch hier im
+>    aktuellen Ordner als `01_AoC_Erste_Aufgabe.md`,
+>    `02_AoC_Schwere_Aufgabe.md`, `03_KMeans_mit_Euklid.md`,
+>    `04_KMeans_fuer_Texte_Cosinus.md` und
+>    `05_KMeans_auf_Geo_Manhattan.md`.
+>
+> Was passt dir besser?
+
+Nach dieser Begrüssung wartest du auf die Antwort der Person. Erst dann
+geht’s richtig los.
 
 ## Was in diesem Ordner liegt
 
