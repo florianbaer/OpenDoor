@@ -70,8 +70,13 @@ else {
 Write-Host 'Ready for the next visitor.' -ForegroundColor Cyan
 
 # --- Hand over to Claude CLI in the Code directory -----------------------
+# Align PowerShell location, .NET process cwd, AND environment so any
+# wrapper/shim sees the same value.
 Set-Location -LiteralPath $CodeDir
-Write-Host "Current directory: $((Get-Location).Path)" -ForegroundColor DarkGray
+[System.IO.Directory]::SetCurrentDirectory($CodeDir)
+[Environment]::CurrentDirectory = $CodeDir
+$env:PWD  = $CodeDir
+$env:INIT_CWD = $CodeDir
 
 $claudeCmd = Get-Command -Name 'claude' -ErrorAction SilentlyContinue
 if ($null -eq $claudeCmd) {
@@ -79,11 +84,19 @@ if ($null -eq $claudeCmd) {
     exit 0
 }
 
+Write-Host '--- Claude launch diagnostics ---'                       -ForegroundColor DarkGray
+Write-Host "Claude command type : $($claudeCmd.CommandType)"          -ForegroundColor DarkGray
+Write-Host "Claude source       : $($claudeCmd.Source)"               -ForegroundColor DarkGray
+Write-Host "PowerShell location : $((Get-Location).Path)"             -ForegroundColor DarkGray
+Write-Host "Process cwd (.NET)  : $([System.IO.Directory]::GetCurrentDirectory())" -ForegroundColor DarkGray
+Write-Host '---------------------------------'                        -ForegroundColor DarkGray
+
 Write-Host "Launching Claude CLI in '$CodeDir' ..." -ForegroundColor Cyan
 
-# Bulletproof launch: claude.cmd is a wrapper that can lose the parent
-# PowerShell working directory. Force the working directory via cmd.exe's
-# `cd /d` (handles drive changes too) right before calling claude. This
-# guarantees claude starts in $CodeDir regardless of any shim/alias chain.
-$cmdLine = 'cd /d "{0}" && claude' -f $CodeDir
+# Invoke claude through cmd.exe with an explicit `cd /d`. cmd inherits its
+# cwd from us (which we've now aligned), but `cd /d` makes the working
+# directory of the child process completely unambiguous, including the
+# drive letter. We pass $CodeDir again as an argument in case the CLI
+# treats a positional path as the project directory.
+$cmdLine = 'cd /d "{0}" && claude "{0}"' -f $CodeDir
 & cmd.exe /c $cmdLine
