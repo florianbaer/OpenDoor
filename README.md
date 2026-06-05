@@ -22,16 +22,28 @@ nur Python + Node verfügbar, Code speichern + ausführen).
 
 ## Zwischen zwei Besucher:innen
 
-```powershell
-.\reset.ps1
-```
+Bei jedem Personenwechsel:
+
+1. **Im Terminal einen neuen Tab öffnen** (Windows Terminal: `Strg + T`).
+   Die laufende Claude-Session der vorigen Person bleibt im alten Tab,
+   damit nichts gelockt ist.
+2. Ins Repo wechseln:
+   ```powershell
+   cd src/OpenDoor
+   ```
+3. Reset-Script starten:
+   ```powershell
+   .\reset.ps1
+   ```
 
 Das Script:
 
-1. Löscht `Code/` (was die vorige Person geschrieben hat).
-2. Erstellt `Code/` neu.
-3. Kopiert alle `*.md`-Handouts und `*.csv`-Daten + `AGENT.md` rein.
-4. Wechselt nach `Code/` und startet die Claude-CLI.
+1. Macht `git pull` auf OpenDoor (neueste Handouts / `CLAUDE.md` / `AGENTS.md`).
+2. Stellt sicher, dass `~/src/Code` existiert (legt es an, falls nicht).
+3. Kopiert alle `*.md`-Handouts (inkl. `CLAUDE.md` und `AGENTS.md`) plus
+   `*.csv`-Daten nach `Code/` — überschreibt vorhandene, löscht nichts.
+4. Wechselt nach `Code/` und startet die Claude-CLI mit einem
+   Initial-Prompt, sodass die Welcome-Nachricht sofort kommt.
 
 Läuft ohne Rückfrage durch.
 
@@ -54,9 +66,14 @@ nach `~/src/OpenDoor`. Erzeugt zusätzlich `~/src/Code` als Arbeitsordner.
 
 ## Typische Stolpersteine
 
-- **Andere Sprache als Python/Node gewünscht** — `AGENT.md` erklärt das.
-  Claude bietet automatisch die zwei Optionen an (Code zeigen ohne
-  Ausführen / in Python umsetzen).
+- **Notebook 05 spinnt manchmal** — wenn es hängt, einfach neu starten.
+  Das **Login-Passwort** bekommst du vom Organisator.
+- **Internet weg** — Claude Code braucht eine Verbindung. Im WLAN
+  **„Helsana-Guest"** mit dem eigenen persönlichen Account anmelden,
+  dann kann sofort weitergearbeitet werden.
+- **Andere Sprache als Python/Node gewünscht** — `AGENTS.md` / `CLAUDE.md`
+  erklären das. Claude bietet automatisch die zwei Optionen an (Code
+  zeigen ohne Ausführen / in Python umsetzen).
 - **Claude CLI startet nicht** — `claude --version` checken. Wenn nicht
   installiert, neu installieren oder Person an einen Nachbarstand
   schicken.
@@ -65,6 +82,27 @@ nach `~/src/OpenDoor`. Erzeugt zusätzlich `~/src/Code` als Arbeitsordner.
 - **Tests schlagen fehl** — meistens fehlt eine pip-Library. Claude
   vorschlagen lassen: „installier die fehlende Dependency und versuch
   es nochmal."
+
+## FAQ
+
+**„Kann ich auch Opus 4.8 probieren?"** — Ja, wenn jemand unbedingt
+will, dann gerne. Für die kleinen Übungen hier ist es allerdings
+overkill: Sonnet reicht für alles, was am Marktstand vorkommt, und ist
+schneller. Opus also nur bewusst einsetzen, nicht als Default.
+
+**„Darf ich Chrome / Internet aufmachen?"** — Nur, wenn eine Webseite
+explizit angezeigt werden soll (z. B. um etwas konkret zu zeigen).
+Sonstiges Surfen ist am Stand nicht nötig — alles, was es für die
+Übungen braucht, liegt im Ordner oder kommt von Claude.
+
+**„Muss ich alleine arbeiten?"** — Nein. Am PC sind normalerweise 5
+Personen gleichzeitig — Gruppenarbeit ist ausdrücklich erwünscht.
+Zusammen probieren, diskutieren, sich gegenseitig die Schritte erklären
+macht meistens mehr Spass und führt zu besseren Aha-Momenten.
+
+**„Wer hat das PC-Passwort?"** — **Markus**, **Lea**, **Stefan** und
+**Florian**. Bei einem Neustart oder Login-Problem einfach eine dieser
+Personen ansprechen.
 
 ## Dateien hier
 

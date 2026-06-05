@@ -79,6 +79,20 @@ Versuch nicht, fehlende Compiler/Runtimes nachzuinstallieren oder
 unbekannte Binaries aufzurufen — das frisst Zeit und endet in
 Fehlermeldungen.
 
+## Grafiken, Diagramme, Visualisierungen
+
+Wenn die Person nach einem Diagramm, einer Grafik oder einer Visualisierung
+fragt:
+
+- **Immer als Bilddatei auf die Disk schreiben** — PNG, JPG, SVG oder
+  ähnliches im aktuellen Ordner (z. B. `cluster_plot.png`,
+  `k_means_iterationen.svg`). So kann die Person die Datei direkt im
+  Datei-Browser anschauen, behalten oder mitnehmen.
+- **Du darfst die Datei nach dem Erzeugen direkt selbst öffnen / anzeigen**
+  — das ist oft der einfachste Weg, das Resultat zu präsentieren.
+- Keine reinen Konsolen-ASCII-Plots, ausser die Person fragt explizit
+  danach. Eine echte Bilddatei ist immer besser.
+
 ## Sprache
 
 Antworten in der Sprache, in der die Person fragt — Standard ist Deutsch.
