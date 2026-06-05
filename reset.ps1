@@ -22,10 +22,16 @@ param()
 $ErrorActionPreference = 'Stop'
 
 # --- Paths ----------------------------------------------------------------
+# Resolve script location for finding *.md / *.csv source files.
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$ParentDir = Split-Path -Parent $ScriptDir
-$CodeDir   = Join-Path $ParentDir 'Code'
 
+# Code/ lives at $HOME\src\Code (created by Setup-OhMyPosh.ps1).
+# Use an absolute path here so reset works regardless of where the script
+# is invoked from.
+$CodeDir = Join-Path $HOME 'src\Code'
+
+Write-Host "ScriptDir : $ScriptDir" -ForegroundColor DarkGray
+Write-Host "CodeDir   : $CodeDir"   -ForegroundColor DarkGray
 Write-Host "Resetting '$CodeDir' for the next visitor ..." -ForegroundColor Cyan
 
 # --- Wipe -----------------------------------------------------------------
@@ -65,6 +71,7 @@ Write-Host 'Ready for the next visitor.' -ForegroundColor Cyan
 
 # --- Hand over to Claude CLI in the Code directory -----------------------
 Set-Location -LiteralPath $CodeDir
+Write-Host "Current directory: $(Get-Location)" -ForegroundColor DarkGray
 
 $claudeCmd = Get-Command -Name 'claude' -ErrorAction SilentlyContinue
 
@@ -74,4 +81,7 @@ if ($null -eq $claudeCmd) {
 }
 
 Write-Host "Launching Claude CLI in '$CodeDir' ..." -ForegroundColor Cyan
-& $claudeCmd.Source
+# Use Start-Process with explicit -WorkingDirectory so the child process
+# inherits the Code directory even if the wrapper would otherwise default
+# to its own location.
+Start-Process -FilePath $claudeCmd.Source -WorkingDirectory $CodeDir -NoNewWindow -Wait
